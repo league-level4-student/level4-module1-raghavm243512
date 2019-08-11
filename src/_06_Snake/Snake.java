@@ -36,6 +36,27 @@ public class Snake {
 	public void update() {
 		//1. use a switch statement to check on the currentDirection
 		//   of the snake and calculate its next x and y position.
+		for (int i = snake.size()-1;i>=1;i--) {
+			snake.get(i).setLocation(snake.get(i-1).getLocation());
+		}
+		switch (currentDirection) {
+		case UP: {
+			snake.get(0).getLocation().y--;
+			break;
+		}
+		case DOWN: {
+			snake.get(0).getLocation().y++;
+			break;
+		}
+		case LEFT: {
+			snake.get(0).getLocation().x--;
+			break;
+		}
+		case RIGHT: {
+			snake.get(0).getLocation().x++;
+			break;
+		}
+		}
 		
 
 		//2. Iterate through the SnakeSegments in reverse order
@@ -47,43 +68,51 @@ public class Snake {
 		
 
 		//4. set canMove to true
-		
+		canMove=true;
 	}
 
 	public void setDirection(Direction d) {
 		//1. set the current direction equal to the passed in Direction only if canMove is true.
 		//   set canMove equal to false.
 		//   make sure the snake cannot completely reverse directions.
-		
+		currentDirection=d;
 	}
 
 	public void reset(Location loc) {
 		//1. clear the snake
-		
+		snake = new ArrayList<SnakeSegment>();
 		//2. set the location of the head
-		
+		head = new SnakeSegment(loc, BODY_SIZE);
 		//3. add the head to the snake
+		snake.add(head);
 		
 	}
 
-	public boolean isOutOfBounds() {
+	public boolean isOutOfBounds(int w, int h) {
 		//1. complete the method so it returns true if the head of the snake is outside of the window
 		//   and false otherwise
-		
+		if (getHeadLocation().x>w||getHeadLocation().x<0||getHeadLocation().y<0||getHeadLocation().y>h)
+			return true;
 		return false;
 	}
 	
 	public boolean isHeadCollidingWithBody() {
 		//1. complete the method so it returns true if the head is located
 		//   in the same location as any other body segment
-		
+		for (int i = 2;i<snake.size();i++) {
+			if (snake.get(i).getLocation().equals(getHeadLocation()))
+				return true;
+		}
 		return false;
 	}
 
 	public boolean isLocationOnSnake(Location loc) {
 		//1. complete the method so it returns true if the passed in
 		//   location is located on the snake
-		
+		for (int i = 0;i<snake.size();i++) {
+			if (snake.get(i).getLocation().equals(loc))
+				return true;
+		}
 		return false;
 	}
 
