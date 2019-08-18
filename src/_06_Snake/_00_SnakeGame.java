@@ -75,7 +75,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	public void startGame() {
 		//1. Save the instructions for the game in the following string variable.
-		String instructions = "eat stuff with arrows and don't bump things";
+		String instructions = "eat stuff";
 		
 		String[] options = new String[] { "Expert", "Moderate", "Beginner" };
 		int input = JOptionPane.showOptionDialog(null, instructions, "Snake", 0, -1, null, options, 0);
@@ -143,7 +143,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//1. Create a new Location object that is set to a random location
 		Location l = new Location((int)(Math.random()*WIDTH), (int)(Math.random()*HEIGHT));
 		while(snake.isLocationOnSnake(l)) {
-			l = new Location((int)(Math.random()*WIDTH)*WINDOW_SCALE, (int)(Math.random()*HEIGHT)*WINDOW_SCALE);
+			l = new Location((int)(Math.random()*WIDTH), (int)(Math.random()*HEIGHT));
 		}
 		//2. set the foodLocation variable equal to the Location object you just created.
 		//   use the snake's isLocationOnSnake method to make sure you don't put the food on the snake
@@ -156,7 +156,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//1. stop the timer
 		timer.stop();
 		//2. tell the user their snake is dead
-		int i = JOptionPane.showConfirmDialog(null, "You lose. Play again?", null, JOptionPane.YES_NO_CANCEL_OPTION);
+		int i = JOptionPane.showConfirmDialog(null, "You lose. Play again?", null, JOptionPane.YES_NO_OPTION);
 		//3. ask them if they want to play again.
 		if (i==1) {
 			System.exit(0);
@@ -185,10 +185,12 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		if (snake.isHeadCollidingWithBody()||snake.isOutOfBounds(WIDTH, HEIGHT)) {
 			gameOver();
 		}
+		
 		//3. if the location of the head is equal to the location of the food,
 		// 	 feed the snake and set the food location
-		if (snake.getHeadLocation()==foodLocation) {
+		if (snake.getHeadLocation().equals(foodLocation)) {
 			snake.feed();
+			setFoodLocation();
 		}
 		//4. call panel.repaint();
 		panel.repaint();

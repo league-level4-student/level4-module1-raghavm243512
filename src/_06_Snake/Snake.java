@@ -26,46 +26,47 @@ public class Snake {
 	public void feed() {
 		//1. add a new SnakeSegment object to the snake
 		snake.add(new SnakeSegment(snake.get(0).getLocation(), BODY_SIZE));
+		
 	}
 
 	public Location getHeadLocation() {
 		//2. return the location of the snake's head
-		return head.getLocation();
+		return snake.get(0).getLocation();
 	}
 
 	public void update() {
 		//1. use a switch statement to check on the currentDirection
 		//   of the snake and calculate its next x and y position.
-		for (int i = snake.size()-1;i>=1;i--) {
-			snake.get(i).setLocation(snake.get(i-1).getLocation());
-		}
+		int x = snake.get(0).getLocation().x;
+		int y = snake.get(0).getLocation().y;
 		switch (currentDirection) {
 		case UP: {
-			snake.get(0).getLocation().y--;
+			y--;
 			break;
 		}
 		case DOWN: {
-			snake.get(0).getLocation().y++;
+			y++;
 			break;
 		}
 		case LEFT: {
-			snake.get(0).getLocation().x--;
+			x--;
 			break;
 		}
 		case RIGHT: {
-			snake.get(0).getLocation().x++;
+			x++;
 			break;
 		}
 		}
 		
-
 		//2. Iterate through the SnakeSegments in reverse order
 		//2a. Update each snake segment to the location of the segment 
 		//    in front of it.
-		
+		for (int i = snake.size()-1;i>=1;i--) {
+			snake.get(i).setLocation(snake.get(i-1).getLocation());
+		}
 		
 		//3. set the location of the head to the new location calculated in step 1
-		
+		snake.get(0).setLocation(new Location(x,y));
 
 		//4. set canMove to true
 		canMove=true;
@@ -118,6 +119,7 @@ public class Snake {
 
 	public void draw(Graphics g) {
 		for (SnakeSegment s : snake) {
+			System.out.println(s.getLocation().x + " " + s.getLocation().y);
 			s.draw(g);
 		}
 	}
